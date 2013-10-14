@@ -1,36 +1,35 @@
 var isBrowser = this.window ? true : false,
-	objectId = isBrowser ? require("object-id") : require("./object-id"),
-	inherits = isBrowser ? require("inherit") : require("util").inherits,
-	EventEmitter = isBrowser ? require("emitter") : require("events").EventEmitter;
+objectId = isBrowser ? require("object-id") : require("./object-id"),
+inherits = isBrowser ? require("inherit") : require("util").inherits,
+EventEmitter = isBrowser ? require("emitter") : require("events").EventEmitter;
 
 module.exports = Node;
 
-
-function Node(){
+function Node() {
 	EventEmitter.call(this);
-    this._id = objectId();
+	this._id = objectId();
 	this._childs = {};
 	this._childIdsList = [];
 	this._parent = null;
 	this._data = {};
 }
 
-if(isBrowser){
+if (isBrowser) {
 	EventEmitter(o);
-}else{
-	inherits(Node,EventEmitter);
+} else {
+	inherits(Node, EventEmitter);
 }
 
 var o = Node.prototype;
 
-o.getChild = function(childId){
+o.getChild = function (childId) {
 	var child = this._childs[childId];
-	if(child){
+	if (child) {
 		return child;
-	}else{
-		for(var cid in this._childIdsList){
-            child = this._childs[cid];
-			if(child && child.getChild(childId)){
+	} else {
+		for (var cid in this._childIdsList) {
+			child = this._childs[cid];
+			if (child && child.getChild(childId)) {
 				return child;
 			}
 		}
@@ -39,10 +38,10 @@ o.getChild = function(childId){
 }
 
 /**
-* @member Node#createChild
-* @return {Node} , return new child node.
-*/
-o.createChild = function(){
+ * @member Node#createChild
+ * @return {Node} , return new child node.
+ */
+o.createChild = function () {
 	var child = new Node();
 	child._parent = this;
 	this._childs[child.id] = child;
@@ -51,14 +50,14 @@ o.createChild = function(){
 }
 
 /**
-* @member Node#appendChild
-* @param {Node} child , child can't contain root.
-* @return {Node} , self.
-*/
-o.appendChild = function(child){
-	if(this.root.getChild(child.id) || child._childIdsList.length !== 0){
+ * @member Node#appendChild
+ * @param {Node} child , child can't contain root.
+ * @return {Node} , self.
+ */
+o.appendChild = function (child) {
+	if (this.root.getChild(child.id) || child._childIdsList.length !== 0) {
 		return this;
-	}else if(child.parent){
+	} else if (child.parent) {
 		child.parent.removeChild(child.id);
 	}
 	child._parent = this;
@@ -67,276 +66,274 @@ o.appendChild = function(child){
 	return this;
 }
 
-o.removeChild = function(childId){
+o.removeChild = function (childId) {
 
 	child = this.getChild(childId);
-	
+
 	var parent;
-	
-	if(child && (parent = child._parent)){
+
+	if (child && (parent = child._parent)) {
 		delete parent._childs[childId];
 		child._parent = null;
 		var index = parent._childIdsList.indexOf(childId);
-		parent._childIdsList.splice(index,1);
+		parent._childIdsList.splice(index, 1);
 	}
-	
+
 	return this;
-	
+
 }
 
-o.replaceNode = function(child,targetId){
+o.replaceNode = function (child, targetId) {
 
 	var target = this.getChild(targetId);
-	
-	if( !child || !target || target.getChild(this.id) || child.getChild(this.id) || target.getChild(child.id) ){
+
+	if (!child || !target || target.getChild(this.id) || child.getChild(this.id) || target.getChild(child.id)) {
 		return this;
 	}
-	
+
 	var parent = child.parent;
-	if(parent){
+	if (parent) {
 		parent.removeChild(child.id);
 	}
-	
+
 	var index = target.position();
-	
-	target.parent._childIdsList.splice(index,1,child);
-    child._parent = target.parent;
-    delete target.parent._childs[target.id];
+
+	target.parent._childIdsList.splice(index, 1, child);
+	child._parent = target.parent;
+	delete target.parent._childs[target.id];
 	target._parent = null;
-	
-	return this;		
-	
+
+	return this;
+
 }
 
-o.position = function(childId){
+o.position = function (childId) {
 
 	var child = this._getNode(childId);
-	
-	if(child){
-		var parent = child.parent;        
+
+	if (child) {
+		var parent = child.parent;
 		return parent ? parent._childIdsList.indexOf(child.id) : null;
-	}else{
+	} else {
 		return null;
 	}
-    
+
 }
 
-o.layer = function(childId){
-	var child = this._getNode(childId),layer = 0;
-		
-	if(child){
+o.layer = function (childId) {
+	var child = this._getNode(childId),
+	layer = 0;
+
+	if (child) {
 		var parent = child.parent;
-		while(parent){
+		while (parent) {
 			layer += 1;
 			parent = parent.parent;
-		}		
+		}
 		return layer;
-	}else{
+	} else {
 		return 0;
 	}
 }
 
-o._getNode = function(childId){
-	
+o._getNode = function (childId) {
+
 	var child;
-	
-	if(childId){
-		if(childId === this.id){
+
+	if (childId) {
+		if (childId === this.id) {
 			child = this;
-		}else{
+		} else {
 			child = this.getChild(childId);
 		}
-	}else{
+	} else {
 		child = this;
-	}	
-	
+	}
+
 	return child;
-	
+
 }
 
-o.top = function(childId){
-	var child = this._getNode(childId),parent;
-	if(child && (parent = child.parent)){
+o.top = function (childId) {
+	var child = this._getNode(childId),
+	parent;
+	if (child && (parent = child.parent)) {
 		var index = parent._childIdsList.indexOf(childId);
-		parent._childIdsList.splice(index,1);
+		parent._childIdsList.splice(index, 1);
 		parent._childIdsList.unshift(childId);
 	}
 
 	return this;
 }
 
-o.up = function(childId){
-	var child = this._getNode(childId),parent;
-	if(child && (parent = child.parent)){
+o.up = function (childId) {
+	var child = this._getNode(childId),
+	parent;
+	if (child && (parent = child.parent)) {
 		var index = parent._childIdsList.indexOf(child.id);
-		parent._childIdsList.splice(index,1);
-		if(index !== 0){
-			parent._childIdsList.splice(index-1,0,child.id);
+		parent._childIdsList.splice(index, 1);
+		if (index !== 0) {
+			parent._childIdsList.splice(index - 1, 0, child.id);
 		}
 	}
 	return this;
 }
 
-
-o.down = function(childId){
-	var child = this._getNode(childId),parent;
-	if(child && (parent = child.parent)){
+o.down = function (childId) {
+	var child = this._getNode(childId),
+	parent;
+	if (child && (parent = child.parent)) {
 		var nextNode = child.nextNode();
-        if(nextNode){
-            nextNode.up();
-        }
+		if (nextNode) {
+			nextNode.up();
+		}
 	}
 	return this;
 }
 
-o.nextNode = function(childId){
-    var child = this._getNode(childId);
-    if(child){
-        var parent = child.parent,
-            index = child.position(),
-            nextChildId = parent._childIdsList[index+1];
-            
-        if(nextChildId){
-            return parent.getChild(nextChildId);
-        }        
-    }
+o.nextNode = function (childId) {
+	var child = this._getNode(childId);
+	if (child) {
+		var parent = child.parent,
+		index = child.position(),
+		nextChildId = parent._childIdsList[index + 1];
+
+		if (nextChildId) {
+			return parent.getChild(nextChildId);
+		}
+	}
 }
 
-o.prevNode = function(childId){
-    var child = this._getNode(childId);
-    if(child){
-        var parent = child.parent,
-            index = child.position(),
-            prevChildId = parent._childIdsList[index-1];
-            
-        if(prevChildId){
-            return parent.getChild(prevChildId);
-        }        
-    }
+o.prevNode = function (childId) {
+	var child = this._getNode(childId);
+	if (child) {
+		var parent = child.parent,
+		index = child.position(),
+		prevChildId = parent._childIdsList[index - 1];
+
+		if (prevChildId) {
+			return parent.getChild(prevChildId);
+		}
+	}
 }
 
 // move childId node to  parentId node.
-o.move = function(childId,parentId){
+o.move = function (childId, parentId) {
 
 	var child = this.getChild(childId),
-		parent = parentId === this.parent ? this : this.getChild(parentId);
-	
-	if( child && parent && !child.getChild(parentId) ){
+	parent = parentId === this.parent ? this : this.getChild(parentId);
+
+	if (child && parent && !child.getChild(parentId)) {
 		var childParent = child.parent;
 		childParent.removeChild(child.id);
 		parent.appendChild(child);
 	}
-	
+
 	return this;
-	
+
 }
 
-o.isRoot = function(){
-	return this.parent ? false : true ;
+o.isRoot = function () {
+	return this.parent ? false : true;
 }
 
-o.data = function(){
-	
+o.data = function () {
+
 	var obj = {}
-	
-	if(arguments.length === 2){
+
+	if (arguments.length === 2) {
 		obj[arguments[0]] = arguments[1];
-	}else if(arguments.length === 1){
-        if(typeof arguments[0] === "string"){
-            return this._data[arguments[0]];
-        }else{
-            obj = arguments[0];
-        }
-	}else{
-        return this._data;
-    }
-	
-	for(var k in obj){
+	} else if (arguments.length === 1) {
+		if (typeof arguments[0] === "string") {
+			return this._data[arguments[0]];
+		} else {
+			obj = arguments[0];
+		}
+	} else {
+		return this._data;
+	}
+
+	for (var k in obj) {
 		this._data[k] = obj[k];
 	}
-	
+
 }
 
-o.reborn = function(jsonObj){
-	
-    if(this._childIdsList.length === 0 && this.isRoot()){
-        var self = this;
-        this._id = jsonObj.id;
-        this._childs = {};
-        this._childIdsList = [];
-        this._parent = jsonObj.parent;
-        this._data = jsonObj.data;
-        
-        jsonObj.childIdsList.forEach(function(cid){
-            var child = new Node();
-            child.reborn(jsonObj.childs[cid]);
-            self._childs[cid] = child;
-        });
+o.reborn = function (jsonObj) {
+
+	if (this._childIdsList.length === 0 && this.isRoot()) {
+		var self = this;
+		this._id = jsonObj.id;
+		this._childs = {};
+		this._childIdsList = [];
+		this._parent = jsonObj.parent;
+		this._data = jsonObj.data;
+
+		jsonObj.childIdsList.forEach(function (cid) {
+			var child = new Node();
+			child.reborn(jsonObj.childs[cid]);
+			self._childs[cid] = child;
+		});
 	}
 	return this;
-    
+
 }
 
-Object.defineProperties(o,{
+Object.defineProperties(o, {
 
 	parent : {
-		get : function(){
+		get : function () {
 			return this._parent;
 		}
 	},
-	
-	id: {
-		get : function(){
+
+	id : {
+		get : function () {
 			return this._id;
 		}
 	},
-	
-	route:{
-		get : function(){
+
+	route : {
+		get : function () {
 			var route = [this.id],
-				parent = this.parent;
-			while(parent){
+			parent = this.parent;
+			while (parent) {
 				route.unshift(parent.id);
 				parent = parent.parent;
 			}
 			return route;
 		}
 	},
-    
-    root:{
-        get:function(){
-            var root = this.parent;
-			while(root){
+
+	root : {
+		get : function () {
+			var root = this.parent;
+			while (root) {
 				root = root.parent;
 			}
-			return root || this;            
-        }
-    },
-	
-	json:{
-		get : function(){
-        
+			return root || this;
+		}
+	},
+
+	json : {
+		get : function () {
+
 			var jsonObj = {
 				id : this._id,
 				childs : {},
 				childIdsList : this._childIdsList,
 				parent : this._parent ? this._parent.id : null,
 				data : this._data
-			}, self  =  this;
-			
-			this._childIdsList.forEach(function(cid){
+			},
+			self = this;
+
+			this._childIdsList.forEach(function (cid) {
 				jsonObj.childs[cid] = self._childs[cid].json;
 			})
-			
-            
-            
+
 			return JSON.parse(JSON.stringify(jsonObj));
-            
+
 		}
 	}
-	
+
 });
-
-
-
-
