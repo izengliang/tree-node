@@ -1,0 +1,23 @@
+{
+  "name": "tree-node",
+  "repo": "brighthas/tree-node",
+  "description": "tree node",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {
+    "gingkoapp/object-id": "*",
+    "component/emitter": "*"
+  },
+  "development": {
+	"component/assert":"*",
+    "component/inherit" : "*",
+	"component/type" : "*",
+	"visionmedia/mocha":"*"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": [
+    "index.js"
+  ],
+  "remotes": []
+}
