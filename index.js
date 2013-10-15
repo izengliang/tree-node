@@ -406,6 +406,12 @@ Object.defineProperties(o, {
             });
             return ids;
         }
+    },
+    
+    childIds:{
+        get:function(){
+            return this._childIdsList.concat();
+        }
     }
 
 });
