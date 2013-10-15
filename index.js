@@ -14,13 +14,13 @@ function Node() {
 	this._data = {};
 }
 
+var o = Node.prototype;
+
 if (isBrowser) {
 	EventEmitter(o);
 } else {
 	inherits(Node, EventEmitter);
 }
-
-var o = Node.prototype;
 
 o.getChild = function (childId) {
 	var child = this._childs[childId];
