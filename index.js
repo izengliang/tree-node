@@ -46,6 +46,16 @@ o.createChild = function () {
 	child._parent = this;
 	this._childs[child.id] = child;
 	this._childIdsList.push(child.id);
+    
+    this.emit("add",child,this);
+    this.emit("child list changed",this,this._childIdsList.concat()); 
+    
+    var root = this.root;
+    if(root !== this){
+        root.emit("add",child,this);
+        root.emit("child list changed",this,this._childIdsList.concat()); 
+    }
+    
 	return child;
 }
 
@@ -63,6 +73,16 @@ o.appendChild = function (child) {
 	child._parent = this;
 	this._childs[child.id] = child;
 	this._childIdsList.push(child.id);
+
+    this.emit("add",child,this);
+    this.emit("child list changed",this,this._childIdsList.concat()); 
+    
+    var root = this.root;
+    if(root !== this){
+        root.emit("add",child,this);
+        root.emit("child list changed",this,this._childIdsList.concat()); 
+    }
+    
 	return this;
 }
 
@@ -77,8 +97,17 @@ o.removeChild = function (childId) {
 		child._parent = null;
 		var index = parent._childIdsList.indexOf(childId);
 		parent._childIdsList.splice(index, 1);
+        
+        parent.emit("remove",child,parent);
+        parent.emit("child list changed",parent,parent._childIdsList.concat());    
+        
+        var root = this.root;
+        if(root !== this){
+            root.emit("remove",child,parent);
+            root.emit("child list changed",parent,parent._childIdsList.concat());  
+        }
 	}
-
+    
 	return this;
 
 }
@@ -97,14 +126,24 @@ o.replaceNode = function (child, targetId) {
 	}
 
 	var index = target.position();
-
-	target.parent._childIdsList.splice(index, 1, child);
-	child._parent = target.parent;
-	delete target.parent._childs[target.id];
+    parent = target.parent;
+	parent._childIdsList.splice(index, 1, child);
+	child._parent = parent;
+	delete parent._childs[target.id];
 	target._parent = null;
-
+   
+    parent.emit("remove",target,parent);
+    parent.emit("add",child,parent);
+    parent.emit("child list changed",parent,parent._childIdsList.concat());    
+    
+    var root = this.root;
+    if(root !== this){
+        root.emit("remove",target,parent);
+        root.emit("add",child,parent);
+        root.emit("child list changed",parent,parent._childIdsList.concat());
+    }
+   
 	return this;
-
 }
 
 o.position = function (childId) {
@@ -155,12 +194,19 @@ o._getNode = function (childId) {
 }
 
 o.top = function (childId) {
+
 	var child = this._getNode(childId),
 	parent;
 	if (child && (parent = child.parent)) {
 		var index = parent._childIdsList.indexOf(childId);
 		parent._childIdsList.splice(index, 1);
 		parent._childIdsList.unshift(childId);
+        
+        parent.emit("child list changed",parent,parent._childIdsList.concat());
+        var root = this.root;
+        if(root !== this){
+            root.emit("child list changed",parent,parent._childIdsList.concat());
+        }      
 	}
 
 	return this;
@@ -175,6 +221,11 @@ o.up = function (childId) {
 		if (index !== 0) {
 			parent._childIdsList.splice(index - 1, 0, child.id);
 		}
+        parent.emit("child list changed",parent,parent._childIdsList.concat());
+        var root = this.root;
+        if(root !== this){
+            root.emit("child list changed",parent,parent._childIdsList.concat());
+        }  
 	}
 	return this;
 }
@@ -226,7 +277,7 @@ o.move = function (childId, parentId) {
 	if (child && parent && !child.getChild(parentId)) {
 		var childParent = child.parent;
 		childParent.removeChild(child.id);
-		parent.appendChild(child);
+		parent.appendChild(child);        
 	}
 
 	return this;
@@ -256,6 +307,14 @@ o.data = function () {
 	for (var k in obj) {
 		this._data[k] = obj[k];
 	}
+    
+    Object.freeze(obj);
+    this.emit("data change",this,obj);
+    var root = this.root;
+    if(root !== this){
+        root.emit("data change",this,obj);
+    }
+    return this;
 
 }
 
@@ -274,6 +333,8 @@ o.reborn = function (jsonObj) {
 			child.reborn(jsonObj.childs[cid]);
 			self._childs[cid] = child;
 		});
+        
+        this.emit("reborn",jsonObj);
 	}
 	return this;
 

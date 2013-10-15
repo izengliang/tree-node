@@ -195,6 +195,36 @@ API
     var newNode = new Node;
     newNode.reborn(jsonObj);
         
+events
+=======
+
+##### Event : 'child list change' 
+
+    // parent is child list's parent node.
+    // parent is not necessarily the node , there may be child .
+    // childList is a Array , child ids.
+    node.on("child list change",function(parent,childList){
+        ... ...
+    });
+    
+##### Event : 'add'
+
+    node.on("add",function(newChild,parent){
+        ... ...
+    });
+
+##### Event : "remove"    
+
+    node.on("add",function(removedChild,parent){
+        ... ...
+    });
+        
+##### Event : "data change"      
+  
+    node.on("add",function(node,data){
+        ... ...
+    });
+
 ### LICENSE
     
     MIT , brighthas@gmail.com
