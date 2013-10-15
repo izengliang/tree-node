@@ -14,13 +14,13 @@ function Node() {
 	this._data = {};
 }
 
-var o = Node.prototype;
-
 if (isBrowser) {
-	EventEmitter(o);
+	EventEmitter(Node.prototype);
 } else {
 	inherits(Node, EventEmitter);
 }
+
+var o = Node.prototype;
 
 o.getChild = function (childId) {
 	var child = this._childs[childId];
@@ -395,6 +395,17 @@ Object.defineProperties(o, {
 			return JSON.parse(JSON.stringify(jsonObj));
 
 		}
-	}
+	},
+    
+    allChildIds:{
+        get:function(){
+            var ids = this._childIdsList.concat(),self = this;
+            
+            this._childIdsList.forEach(function(id){
+                ids = ids.concat(self.getChild(id).allChildIds);
+            });
+            return ids;
+        }
+    }
 
 });
