@@ -6,12 +6,12 @@
   "keywords": [],
   "dependencies": {
     "gingkoapp/object-id": "*",
+    "component/inherit" : "*",
+	"component/type" : "*",
     "component/emitter": "*"
   },
   "development": {
 	"component/assert":"*",
-    "component/inherit" : "*",
-	"component/type" : "*",
 	"visionmedia/mocha":"*"
   },
   "license": "MIT",
