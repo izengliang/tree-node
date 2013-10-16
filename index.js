@@ -29,7 +29,7 @@ o.getChild = function (childId) {
 	} else {
 		for (var cid in this._childIdsList) {
 			child = this._childs[cid];
-			if (child && child.getChild(childId)) {
+			if (child && child.getChild(child.id)) {
 				return child;
 			}
 		}
