@@ -370,9 +370,14 @@ Object.defineProperties(o, {
 		get : function () {
 			var root = this.parent;
 			while (root) {
-				root = root.parent;
+                var parent = root.parent;
+				if(parent){
+                    root = parent;
+                }else{
+                    return root;
+                }
 			}
-			return root || this;
+			return this;
 		}
 	},
 
