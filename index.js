@@ -27,9 +27,8 @@ o.getChild = function (childId) {
 	if (child) {
 		return child;
 	} else {
-		for (var cid in this._childIdsList) {
-			child = this._childs[cid];
-			if (child && child.getChild(child.id)) {
+		for (var cid in this._childs) {
+			if ((child = this._childs[cid].getChild(childId))) {
 				return child;
 			}
 		}
