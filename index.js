@@ -244,12 +244,14 @@ o.down = function (childId) {
 o.nextNode = function (childId) {
 	var child = this._getNode(childId);
 	if (child) {
-		var parent = child.parent,
-		index = child.position(),
+		var parent = child.parent;
+		if(parent){
+		var index = child.position(),
 		nextChildId = parent._childIdsList[index + 1];
 
 		if (nextChildId) {
 			return parent.getChild(nextChildId);
+		}
 		}
 	}
 }
