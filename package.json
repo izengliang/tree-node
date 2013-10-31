@@ -1,6 +1,6 @@
 {
   "name": "tree-node",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "tree node",
   "main": "index.js",
   "scripts": {

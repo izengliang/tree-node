@@ -30,6 +30,10 @@ API
     var rootNode = new Node();
     var childNode = root.createChild();
         
+##### #getNode(childId)
+
+	return a node. if no return null.
+
 ##### #appendChild(child)     
 
     var rootNode = new Node();

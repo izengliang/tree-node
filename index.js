@@ -174,7 +174,7 @@ o.layer = function (childId) {
 	}
 }
 
-o._getNode = function (childId) {
+o.getNode = o._getNode = function (childId) {
 
 	var child;
 
