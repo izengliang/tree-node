@@ -242,7 +242,7 @@ o.down = function (childId) {
 }
 
 o.nextNode = function (childId) {
-	var child = this._getNode(childId);
+	var child = childId? this._getNode(childId) : this;
 	if (child) {
 		var parent = child.parent;
 		if(parent){
@@ -257,7 +257,7 @@ o.nextNode = function (childId) {
 }
 
 o.prevNode = function (childId) {
-	var child = this._getNode(childId);
+	var child = childId ? this._getNode(childId) : this;
 	if (child) {
 		var parent = child.parent;
 		if(parent){
