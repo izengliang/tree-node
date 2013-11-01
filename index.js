@@ -42,7 +42,7 @@ o.getChild = function (childId) {
  */
 o.createChild = function () {
 	var child = new Node();
-	child._parent = this.id;
+	child._parent = this;
 	this._childs[child.id] = child;
 	this._childIdsList.push(child.id);
     
@@ -127,7 +127,7 @@ o.replaceNode = function (child, targetId) {
 	var index = target.position();
     parent = target.parent;
 	parent._childIdsList.splice(index, 1, child);
-	child._parent = parent.id;
+	child._parent = parent;
 	delete parent._childs[target.id];
 	target._parent = null;
    
@@ -327,7 +327,7 @@ o.reborn = function (jsonObj) {
 		var self = this;
 		this._id = jsonObj.id;
 		this._childs = {};
-		this._childIdsList = [];
+		this._childIdsList = jsonObj.childIdsList;
 		this._parent = jsonObj.parent;
 		this._data = jsonObj.data;
 
