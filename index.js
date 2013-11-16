@@ -323,7 +323,7 @@ o.data = function () {
 
 o.reborn = function (jsonObj) {
 
-	if (this._childIdsList.length === 0 && this.isRoot()) {
+	if (this.isRoot()) {
 		var self = this;
 		this._id = jsonObj.id;
 		this._childs = {};

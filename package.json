@@ -1,6 +1,6 @@
 {
   "name": "tree-node",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "tree node",
   "main": "index.js",
   "scripts": {
@@ -23,5 +23,6 @@
   },
   "directories": {
     "test": "test"
-  }
+  },
+  "homepage": "https://github.com/brighthas/tree-node"
 }
