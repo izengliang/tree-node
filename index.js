@@ -261,14 +261,29 @@ o.prevNode = function (childId) {
 	if (child) {
 		var parent = child.parent;
 		if(parent){
-		var index = child.position(),
-		prevChildId = parent._childIdsList[index - 1];
+            var index = child.position(),
+            prevChildId = parent._childIdsList[index - 1];
 
-		if (prevChildId) {
-			return parent.getChild(prevChildId);
-		}
+            if (prevChildId) {
+                return parent.getChild(prevChildId);
+            }
 		}
 	}
+}
+
+o.firstChild = function(childId){
+    var root = childId ? this._getNode(childId) : this;
+    if(root){
+        return root.getNode(root._childIdsList[0]);
+    }
+}
+
+o.lastChild = function(childId){
+    var root = childId ? this._getNode(childId) : this;
+    if(root){
+        var list = root._childIdsList,len = list.length;
+        return root.getNode(list[len-1]);
+    }
 }
 
 // move childId node to  parentId node.
