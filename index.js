@@ -293,10 +293,10 @@ o.depthFirstChild = function(childId){
         rs = root;goFind = true;
         for(;goFind;){
             var r = rs.firstChild();
-            if(r){
-                rs = r;
-            }else{
+            if(r === rs){
                 goFind = false;
+            }else{
+                rs = r;
             }
         }
     }
@@ -310,10 +310,10 @@ o.depthLastChild = function(childId){
         rs = root;goFind = true;
         for(;goFind;){
             var r = rs.lastChild();
-            if(r){
-                rs = r;
-            }else{
+            if(r === rs){
                 goFind = false;
+            }else{
+                rs = r;
             }
         }
     }
