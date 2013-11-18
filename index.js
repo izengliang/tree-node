@@ -295,7 +295,7 @@ o.depthFirstChild = function(childId){
         rs = root;goFind = true;
         for(;goFind;){
             var r = rs.firstChild();
-            if(r === rs){
+            if(!r){
                 goFind = false;
             }else{
                 rs = r;
@@ -312,7 +312,7 @@ o.depthLastChild = function(childId){
         rs = root;goFind = true;
         for(;goFind;){
             var r = rs.lastChild();
-            if(r === rs){
+            if(!r){
                 goFind = false;
             }else{
                 rs = r;
