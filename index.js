@@ -286,6 +286,41 @@ o.lastChild = function(childId){
     }
 }
 
+o.depthFirstChild = function(childId){
+    var rs = null;
+    var root = childId ? this._getNode(childId) : this;
+    if(root){
+        rs = root;goFind = true;
+        for(;goFind;){
+            var r = rs.firstChild();
+            if(r){
+                rs = r;
+            }else{
+                goFind = false;
+            }
+        }
+    }
+    return rs;
+}
+
+o.depthLastChild = function(childId){
+    var rs = null;
+    var root = childId ? this._getNode(childId) : this;
+    if(root){
+        rs = root;goFind = true;
+        for(;goFind;){
+            var r = rs.lastChild();
+            if(r){
+                rs = r;
+            }else{
+                goFind = false;
+            }
+        }
+    }
+    return rs;
+
+}
+
 // move childId node to  parentId node.
 o.move = function (childId, parentId) {
 
