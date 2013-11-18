@@ -273,7 +273,7 @@ o.prevNode = function (childId) {
 
 o.firstChild = function(childId){
     var root = childId ? this._getNode(childId) : this;
-    if(root){
+    if(root && root._childIdsList[0]){
         return root.getNode(root._childIdsList[0]);
     }
 }
@@ -282,7 +282,9 @@ o.lastChild = function(childId){
     var root = childId ? this._getNode(childId) : this;
     if(root){
         var list = root._childIdsList,len = list.length;
-        return root.getNode(list[len-1]);
+        if(list[len-1]){
+            return root.getNode(list[len-1]);
+        }
     }
 }
 
