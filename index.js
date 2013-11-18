@@ -320,7 +320,6 @@ o.depthLastChild = function(childId){
         }
     }
     return rs;
-
 }
 
 // move childId node to  parentId node.
