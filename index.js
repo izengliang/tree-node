@@ -5,9 +5,9 @@ EventEmitter = isBrowser ? require("emitter") : require("events").EventEmitter;
 
 module.exports = Node;
 
-function Node() {
+function Node(id) {
 	EventEmitter.call(this);
-	this._id = objectId();
+	this._id = id || objectId();
 	this._childs = {};
 	this._childIdsList = [];
 	this._parent = null;
