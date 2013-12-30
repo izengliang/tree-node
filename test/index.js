@@ -234,5 +234,29 @@ describe("Node",function(){
         assert(root.allChildIds.length === 2)
     })
 
-    
+    it("#nextDepthNode",function(){
+            var root = new Node(); 
+            var n1 = new Node;
+            var n2 = new Node;      
+    		var n3 = new Node;  
+            var o = root.appendChild(n1).appendChild(n2);
+    		n2.appendChild(n3);
+            var nn = root.nextDepthNode().nextDepthNode().nextDepthNode();
+            assert(nn === n3)
+        })
+   
+     it("#prevDepthNode",function(){
+            var root = new Node(); 
+            var n1 = new Node;
+            var n2 = new Node;      
+    		var n3 = new Node;  
+            var o = root.appendChild(n1).appendChild(n2);
+    		n2.appendChild(n3);
+            var nn = n3.prevDepthNode();
+			
+            assert(nn === n2)
+        })
+    	
+	
+	
 });

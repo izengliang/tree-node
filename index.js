@@ -243,7 +243,6 @@ o.down = function (childId) {
 
 o.nextNode = function (childId) {
 	var child = childId? this._getNode(childId) : this;
-	if (child) {
 		var parent = child.parent;
 		if(parent){
 		var index = child.position(),
@@ -253,12 +252,20 @@ o.nextNode = function (childId) {
 			return parent.getChild(nextChildId);
 		}
 		}
+}
+
+o.nextDepthNode = function nextDeepNode(childId) {
+	var node = childId? this._getNode(childId) : this;
+	var firstChild = node.firstChild();
+	if(firstChild){
+		return firstChild;
+	}else{
+		return node.nextNode();
 	}
 }
 
 o.prevNode = function (childId) {
 	var child = childId ? this._getNode(childId) : this;
-	if (child) {
 		var parent = child.parent;
 		if(parent){
             var index = child.position(),
@@ -268,6 +275,15 @@ o.prevNode = function (childId) {
                 return parent.getChild(prevChildId);
             }
 		}
+}
+
+o.prevDepthNode = function prevDeepNode(childId) {
+	var child = childId ? this._getNode(childId) : this;
+	var prevNode = child.prevNode();
+	if(prevNode){
+		return child.depthLastChild();
+	}else{
+		return child.parent;
 	}
 }
 
