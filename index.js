@@ -1,7 +1,7 @@
 var isBrowser = this.window ? true : false,
 objectId = isBrowser ? require("object-id") : require("./object-id"),
 inherits = isBrowser ? require("inherit") : require("util").inherits,
-EventEmitter = isBrowser ? require("emitter") : require("events").EventEmitter;
+EventEmitter = isBrowser ? require("emitter") : require("emitter-component");
 
 module.exports = Node;
 
@@ -14,10 +14,12 @@ function Node(id) {
 	this._data = {};
 }
 
-if (isBrowser) {
-	EventEmitter(Node.prototype);
-} else {
-	inherits(Node, EventEmitter);
+EventEmitter(Node.prototype);
+
+Node.reborn = function(jsonObj) {
+	var root = new Node();
+	root.reborn(jsonObj);
+	return root;
 }
 
 var o = Node.prototype;
@@ -415,6 +417,10 @@ o.reborn = function (jsonObj) {
 	}
 	return this;
 
+}
+
+o.toJSON = function(){
+	return this.json;
 }
 
 Object.defineProperties(o, {
