@@ -49,13 +49,16 @@ o.createChild = function () {
 	this._childIdsList.push(child.id);
     
     this.emit("add",child,this);
-    this.emit("child list changed",this,this._childIdsList.concat()); 
+    this.emit("child list changed",this,this._childIdsList.concat());
     
     var root = this.root;
     if(root !== this){
         root.emit("add",child,this);
         root.emit("child list changed",this,this._childIdsList.concat()); 
+		
     }
+	root.emit("changed",root);
+    
     
 	return child;
 }
@@ -83,6 +86,9 @@ o.appendChild = function (child) {
         root.emit("add",child,this);
         root.emit("child list changed",this,this._childIdsList.concat()); 
     }
+	
+	root.emit("changed",root);
+	
     
 	return this;
 }
@@ -107,6 +113,9 @@ o.removeChild = function (childId) {
             root.emit("remove",child,parent);
             root.emit("child list changed",parent,parent._childIdsList.concat());  
         }
+		
+		root.emit("changed",root);
+		
 	}
     
 	return this;
@@ -143,6 +152,7 @@ o.replaceNode = function (child, targetId) {
         root.emit("add",child,parent);
         root.emit("child list changed",parent,parent._childIdsList.concat());
     }
+	root.emit("changed",root);
    
 	return this;
 }
@@ -207,7 +217,9 @@ o.top = function (childId) {
         var root = this.root;
         if(root !== this){
             root.emit("child list changed",parent,parent._childIdsList.concat());
-        }      
+        }  
+		root.emit("changed",root);
+		    
 	}
 
 	return this;
@@ -227,6 +239,8 @@ o.up = function (childId) {
         if(root !== this){
             root.emit("child list changed",parent,parent._childIdsList.concat());
         }  
+		root.emit("changed",root);
+		
 	}
 	return this;
 }
@@ -392,6 +406,8 @@ o.data = function () {
     if(root !== this){
         root.emit("data change",this,obj);
     }
+	root.emit("changed",root);
+	
     return this;
 
 }
