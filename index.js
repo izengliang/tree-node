@@ -57,9 +57,7 @@ o.createChild = function () {
         root.emit("child list changed",this,this._childIdsList.concat()); 
 		
     }
-	root.emit("changed",root);
-    
-    
+
 	return child;
 }
 
@@ -86,9 +84,6 @@ o.appendChild = function (child) {
         root.emit("add",child,this);
         root.emit("child list changed",this,this._childIdsList.concat()); 
     }
-	
-	root.emit("changed",root);
-	
     
 	return this;
 }
@@ -113,9 +108,7 @@ o.removeChild = function (childId) {
             root.emit("remove",child,parent);
             root.emit("child list changed",parent,parent._childIdsList.concat());  
         }
-		
-		root.emit("changed",root);
-		
+
 	}
     
 	return this;
@@ -152,8 +145,7 @@ o.replaceNode = function (child, targetId) {
         root.emit("add",child,parent);
         root.emit("child list changed",parent,parent._childIdsList.concat());
     }
-	root.emit("changed",root);
-   
+
 	return this;
 }
 
@@ -218,8 +210,7 @@ o.top = function (childId) {
         if(root !== this){
             root.emit("child list changed",parent,parent._childIdsList.concat());
         }  
-		root.emit("changed",root);
-		    
+
 	}
 
 	return this;
@@ -239,8 +230,7 @@ o.up = function (childId) {
         if(root !== this){
             root.emit("child list changed",parent,parent._childIdsList.concat());
         }  
-		root.emit("changed",root);
-		
+
 	}
 	return this;
 }
@@ -406,8 +396,7 @@ o.data = function () {
     if(root !== this){
         root.emit("data change",this,obj);
     }
-	root.emit("changed",root);
-	
+
     return this;
 
 }
