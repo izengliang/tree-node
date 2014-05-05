@@ -201,9 +201,9 @@ o.top = function (childId) {
 	var child = this._getNode(childId),
 	parent;
 	if (child && (parent = child.parent)) {
-		var index = parent._childIdsList.indexOf(childId);
+		var index = parent._childIdsList.indexOf(child.id);
 		parent._childIdsList.splice(index, 1);
-		parent._childIdsList.unshift(childId);
+		parent._childIdsList.unshift(child.id);
         
         parent.emit("child list changed",parent,parent._childIdsList.concat());
         var root = this.root;
