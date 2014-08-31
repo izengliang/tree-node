@@ -42,8 +42,8 @@ o.getChild = function (childId) {
  * @member Node#createChild
  * @return {Node} , return new child node.
  */
-o.createChild = function () {
-	var child = new Node();
+o.createChild = function (id) {
+	var child = new Node(id);
 	child._parent = this;
 	this._childs[child.id] = child;
 	this._childIdsList.push(child.id);
