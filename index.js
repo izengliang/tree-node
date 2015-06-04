@@ -1,7 +1,7 @@
 var isBrowser = this.window ? true : false,
-objectId = isBrowser ? require("object-id") : require("./object-id"),
-inherits = isBrowser ? require("inherit") : require("util").inherits,
-EventEmitter = isBrowser ? require("emitter") : require("emitter-component");
+objectId =  require("./object-id"),
+inherits =  require("util").inherits,
+EventEmitter =  require("emitter-component");
 
 module.exports = Node;
 
