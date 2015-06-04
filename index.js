@@ -221,8 +221,8 @@ o.up = function (childId) {
 	parent;
 	if (child && (parent = child.parent)) {
 		var index = parent._childIdsList.indexOf(child.id);
-		parent._childIdsList.splice(index, 1);
 		if (index !== 0) {
+			parent._childIdsList.splice(index, 1);
 			parent._childIdsList.splice(index - 1, 0, child.id);
 		}
         parent.emit("child list changed",parent,parent._childIdsList.concat());
@@ -412,6 +412,7 @@ o.reborn = function (jsonObj) {
 		this._data = jsonObj.data;
 
 		jsonObj.childIdsList.forEach(function (cid) {
+			console.log(cid)
 			var child = new Node();
 			child.reborn(jsonObj.childs[cid]);
 			child._parent = self;
