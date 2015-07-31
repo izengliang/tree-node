@@ -199,8 +199,18 @@ describe("Node",function(){
        
        node.data({age:12});
        assert(node.data("name") === "leo" && node.data("age") === 12);
-       
+       node.data({age:13});
+       assert(node.data("name") === "leo" && node.data("age") === 13);
        assert(node.data() === node._data);
+
+       var node2 = new Node();
+       node2.data({age:12});
+       var data = node2.data();
+       data.age = data.age + 1;
+       node2.data(data);
+       data.age = data.age + 1;
+       node2.data(data);
+       assert(data.age === 14);
     });
     
     it("#json",function(){

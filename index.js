@@ -390,7 +390,6 @@ o.data = function () {
 		this._data[k] = obj[k];
 	}
     
-    Object.freeze(obj);
     this.emit("data change",this,obj);
     var root = this.root;
     if(root !== this){
